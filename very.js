@@ -1,5 +1,3 @@
-var textClass = "border-2 text-center sm:text-3xl md:text-4xl lg:text-5xl font-bold font-serif";
-
 get_random = function (list) {
     return list[Math.floor((Math.random()*list.length))];
 } 
@@ -15,49 +13,51 @@ get_result = function (list, simple) {
 
 async function callingFn() {
     try {
-        const response = await fetch("https://api.airtable.com/v0/appORCLNTiuF043RV/Database?api_key=keyTvRDFgxA3qsyDE", {
+        // Accessing airtable api with read-only key
+        const response = await fetch("https://api.airtable.com/v0/appORCLNTiuF043RV/Database?api_key=keyoFYTwLB0vomKLC", {
             method: "get",
             headers: {
                 "Content-Type": "application/json"
             }
         });
-        console.log(response);
         const json = await response.json();
 
-        /*json.then((value) => newprompts  = value)*/
-        // console.log("Success:", JSON.stringify(json));
         return json["records"]
     } catch (error) {
         console.error("Error:", error);
     }
 }
-/*  callingFn().then((value) => var newprompts  = value)
-  var newprompts = callingFn();
-  console.log(newprompts[0])*/
 
 (async () => {
     var res = await callingFn();
-    console.log(res);
+    // Class attributes for output (doesn't include color)
+    var textClass = "text-center sm:text-3xl md:text-4xl lg:text-5xl font-bold font-serif";
 
     async function fetch_concise_adjective(results, random=false) {
         const output = document.getElementById('output');
         const simple = document.getElementById('input').value.toUpperCase();
-        var picked_prompt;
+        var matching_row;
         if (random) {
-            picked_prompt = get_random(results);
-            document.getElementById('input').value = picked_prompt.fields.Simple;
+            matching_row = get_random(results);
+            document.getElementById('input').value = matching_row.fields.Simple;
         } else 
-            picked_prompt = get_result(results, simple);
-        if (picked_prompt == undefined) {
+            matching_row = get_result(results, simple);
+        if (matching_row == undefined) {
             output.innerHTML = "Not Yet Added";
             // Make the text red
             output.setAttribute("class", textClass + " text-red-400");
         } else {
             // There are multiple options for many of the adjectives
             // Each time we should get a random option
-            const numOptions = Object.keys(picked_prompt.fields).length - 1;
-            const selection = Math.floor(Math.random() * numOptions) + 1;
-            output.innerHTML = picked_prompt["fields"]["Concise"+selection]; // The fields are labels 'Concise1' 'Concise2' etc...
+            const numOptions = Object.keys(matching_row.fields).length - 1;
+            const selectedNumber = Math.floor(Math.random() * numOptions) + 1;
+            let selection = matching_row.fields["Concise"+selectedNumber];
+
+            // Find a new response if there are more than 1 options
+            while(numOptions > 1 && selection == output.innerHTML)
+                selection = matching_row.fields["Concise"+(Math.floor(Math.random() * numOptions) + 1)];
+            
+            output.innerHTML = selection; // The fields are labels 'Concise1' 'Concise2' etc...
             // Make the text green
             output.setAttribute("class", textClass + " text-green-400");
         }
@@ -83,6 +83,13 @@ async function callingFn() {
          fetch_concise_adjective(res, true);
       });
     });
+
+    // Fetch result when 'Get Result' button is pressed
+    $(document).ready(function(){
+        $('#get-result').click(function(){
+            fetch_concise_adjective(res);
+        });
+    })
 
     document.body.onkeyup = function(e){
       if(e.keyCode == 13){
