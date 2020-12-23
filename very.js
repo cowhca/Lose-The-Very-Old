@@ -1,3 +1,5 @@
+var textClass = "border-2 text-center sm:text-3xl md:text-4xl lg:text-5xl font-bold font-serif";
+
 get_random = function (list) {
     return list[Math.floor((Math.random()*list.length))];
 } 
@@ -49,7 +51,7 @@ async function callingFn() {
         if (picked_prompt == undefined) {
             output.innerHTML = "Not Yet Added";
             // Make the text red
-            output.setAttribute("class", "text-center sm:text-3xl md:text-4xl lg:text-5xl font-bold font-serif text-red-400");
+            output.setAttribute("class", textClass + " text-red-400");
         } else {
             // There are multiple options for many of the adjectives
             // Each time we should get a random option
@@ -57,7 +59,7 @@ async function callingFn() {
             const selection = Math.floor(Math.random() * numOptions) + 1;
             output.innerHTML = picked_prompt["fields"]["Concise"+selection]; // The fields are labels 'Concise1' 'Concise2' etc...
             // Make the text green
-            output.setAttribute("class", "text-center sm:text-3xl md:text-4xl lg:text-5xl font-bold font-serif text-green-400");
+            output.setAttribute("class", textClass + " text-green-400");
         }
         
     }
