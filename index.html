@@ -17,15 +17,14 @@
 
 <body>
     <div class="px-4 pt-32 pb-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:pt-64">
-        <div class="max-w-2xl sm:mx-auto lg:max-w-5xl w-full">
+        <div class="max-w-2xl sm:mx-auto lg:max-w-full w-full">
             <div class="flex flex-col items-center mb-16 sm:text-center sm:mb-0">
                 <div class="w-12 h-12">
                     <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ficon-icons.com%2Ficons2%2F931%2FPNG%2F512%2Fpencil_icon-icons.com_72386.png&f=1&nofb=1">
                 </div>
-                <p class="text-gray-300">Press enter to get result</p>
                 <form class="grid grid-cols-10 justify-center items-center w-full mb-4 py-16">
-                    <p class = "text-center col-span-2  sm:text-3xl md:text-4xl lg:text-5xl font-bold">very</p>
-                    <p class="text-center col-span-1  sm:text-3xl md:text-4xl lg:text-5xl font-bold">+</p>
+                    <p class = "text-center col-span-2 text-xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold">very</p>
+                    <p class="text-center col-span-1 text-xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold">+</p>
                     <input
                     autocomplete="off"
                     autofocus
@@ -33,11 +32,11 @@
                     placeholder="loading..."
                     required=""
                     type="text"
-                    class="col-span-3  text-center border-b-2 font-sans sm:text-3xl md:text-4xl lg:text-5xl font-bold h-14 transition duration-200 bg-white  border-gray-300 appearance-none focus:outline-none"
+                    class="col-span-3  text-center border-b-2 font-sans text-xl sm:text-4xl  lg:text-5xl xl:text-6xl font-bold h-14 transition duration-200 bg-white  border-gray-300 appearance-none focus:outline-none"
                     />                    
-                    <p class = "text-center col-span-1  sm:text-3xl md:text-4xl lg:text-5xl font-bold">=</p>
+                    <p class = "text-center col-span-1  text-xl sm:text-4xl  lg:text-5xl xl:text-6xl font-bold">=</p>
                     <div class="text-center  w-96 col-span-3">
-                        <p id="output" class="text-center sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-500 font-serif">loading...</p>
+                        <p id="output" class="text-center text-xl sm:text-4xl  lg:text-5xl xl:text-6xl font-bold text-gray-500 font-serif">loading...</p>
                     </div>
                    
                 </form>
@@ -55,7 +54,7 @@
                 </div>
                 
                 <div class="">
-                    <a  onclick = "showhide()" id="add-word" href="#" class="bg-gray-200 rounded text-center text-black h-12 px-6 font-medium tracking-widest">
+                    <a id="add-word" href="https://airtable.com/shrqv67qlN6RDaavH" target="_blank" class="bg-gray-200 rounded text-center text-black h-12 px-6 font-medium tracking-widest">
                     Add Adjective to Database
                     </a>
                 </div>
@@ -69,14 +68,5 @@
     <iframe id="airtable-form" class="airtable-embed airtable-dynamic-height hidden" src="https://airtable.com/embed/shrqv67qlN6RDaavH?backgroundColor=blue" frameborder="0" onmousewheel="" width="100%" height="838" style="background: transparent;"></iframe>
 
     <script src="very.js"></script>
-    <script>
-        function showhide() {   
-            console.log("helo");          
-            var form = document.getElementById("airtable-form");
-            console.log(form);
-            form.classList.toggle('hidden'); 
-            console.log("hello2");
-        }
-    </script>
     <script src="https://static.airtable.com/js/embed/embed_snippet_v1.js"></script>
 </html>
