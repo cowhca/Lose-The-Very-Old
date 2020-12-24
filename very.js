@@ -27,6 +27,12 @@ async function callingFn() {
         console.error("Error:", error);
     }
 }
+// function showhide() {   
+//     console.log("helo");          
+//     let form = document.getElementById("add-word");
+//     form.classList.toggle('hidden'); 
+// }
+
 
 (async () => {
     var res = await callingFn();
@@ -73,16 +79,17 @@ async function callingFn() {
     
 
     // Get a random word pair when the button is pressed
-
-    $(function() {
-        $("#input").focus();
-    });
-
     $(document).ready(function(){
       $('#random-word').click(function(){
          fetch_concise_adjective(res, true);
       });
     });
+
+    // $(document).ready(function(){
+    //     $('#add-word').click(function(){
+    //         showhide();
+    //     });
+    // })
 
     // Fetch result when 'Get Result' button is pressed
     $(document).ready(function(){
@@ -91,9 +98,10 @@ async function callingFn() {
         });
     })
 
-    document.body.onkeyup = function(e){
-      if(e.keyCode == 13){
-          fetch_concise_adjective(res);
-      }
-    }
+    // document.body.onkeyup = function(e){
+    //   if(e.keyCode == 13){
+    //       fetch_concise_adjective(res);
+    //   }
+    // }
   })()
+
