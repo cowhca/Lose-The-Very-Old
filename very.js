@@ -1,6 +1,7 @@
 get_random = function (list) {
     return list[Math.floor((Math.random()*list.length))];
 } 
+
 get_result = function (list, simple) {
     // Regex to trim whitespace and any periods at the beggining and end
     const simpleStr = simple.replace(/^[\s\.]+|[\s\.]+$|\.*/g, '');
@@ -39,35 +40,46 @@ async function callingFn() {
         const output = document.getElementById('output');
         const simple = document.getElementById('input').value;
         var matching_row;
-        if (random) {
-            matching_row = get_random(results);
-            document.getElementById('input').value = matching_row.fields.Simple;
-        } else 
-            matching_row = get_result(results, simple);
-        if (matching_row == undefined) {
-            output.innerHTML = "Not Yet Added";
-            // Make the text red
-            output.classList.remove("text-green-400");
-            output.classList.add("text-red-400");
+        // If input is empty tell user that there is no input
+        if (simple === "" && !random) {
+            output.innerHTML = "No Input"
+            output.classList.remove("text-green-400", "text-gray-400")
+            output.classList.add("text-red-400")
         } else {
-            // There are multiple options for many of the adjectives
-            // Each time we should get a random option
-            const numOptions = Object.keys(matching_row.fields).length - 1;
-            const selectedNumber = Math.floor(Math.random() * numOptions) + 1;
-            let selection = matching_row.fields["Concise"+selectedNumber];
+            // Get matching row
+            if (random) {
+                matching_row = get_random(results);
+                document.getElementById('input').value = matching_row.fields.Simple;
+            } else {
+                matching_row = get_result(results, simple);
 
-            // Find a new response if there are more than 1 options
-            while(numOptions > 1 && selection == output.innerHTML)
-                selection = matching_row.fields["Concise"+(Math.floor(Math.random() * numOptions) + 1)];
-            
-            output.innerHTML = selection; // The fields are labels 'Concise1' 'Concise2' etc...
-            // Make the text green
-            output.classList.remove("text-red-400");
-            output.classList.add("text-green-400");
+            // Outputting result
+            } if (matching_row == undefined) {
+                output.innerHTML = "Not Yet Added";
+                // Make the text red
+                output.classList.remove("text-green-400", "text-gray-400");
+                output.classList.add("text-red-400");
+            } else {
+                // There are multiple options for many of the adjectives
+                // Each time we should get a random option
+                const numOptions = Object.keys(matching_row.fields).length - 1;
+                const selectedNumber = Math.floor(Math.random() * numOptions) + 1;
+                let selection = matching_row.fields["Concise"+selectedNumber];
+
+                // Find a new response if there are more than 1 options
+                while(numOptions > 1 && selection == output.innerHTML)
+                    selection = matching_row.fields["Concise"+(Math.floor(Math.random() * numOptions) + 1)];
+                
+                output.innerHTML = selection; // The fields are labels 'Concise1' 'Concise2' etc...
+                // Make the text green
+                output.classList.remove("text-red-400", "text-gray-400");
+                output.classList.add("text-green-400");
+            }
         }
         
     }
 
+    // Get the initial placeholder values
     const input = document.getElementById("input");
     const output = document.getElementById('output');
     const picked_word = get_random(res);
@@ -89,11 +101,4 @@ async function callingFn() {
             fetch_concise_adjective(res);
         });
     })
-
-    // document.body.onkeyup = function(e){
-    //   if(e.keyCode == 13){
-    //       fetch_concise_adjective(res);
-    //   }
-    // }
-  })()
-
+})()
