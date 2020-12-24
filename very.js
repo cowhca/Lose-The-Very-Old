@@ -2,7 +2,9 @@ get_random = function (list) {
     return list[Math.floor((Math.random()*list.length))];
 } 
 get_result = function (list, simple) {
-    const simpleStr = simple.trim();
+    // Regex to trim whitespace and any periods at the beggining and end
+    const simpleStr = simple.replace(/^[\s\.]+|[\s\.]+$|\.*/g, '');
+    document.getElementById('input').value =simpleStr;
     const regex = new RegExp("^" + simpleStr +"$", "i");
     for (let i in list) {
         if(regex.test(list[i].fields.Simple)) {
@@ -35,7 +37,7 @@ async function callingFn() {
 
     async function fetch_concise_adjective(results, random=false) {
         const output = document.getElementById('output');
-        const simple = document.getElementById('input').value.toUpperCase();
+        const simple = document.getElementById('input').value;
         var matching_row;
         if (random) {
             matching_row = get_random(results);
