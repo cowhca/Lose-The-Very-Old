@@ -17,15 +17,28 @@ get_result = function (list, simple) {
 async function callingFn() {
     try {
         // Accessing airtable api with read-only key
-        const response = await fetch("https://api.airtable.com/v0/appORCLNTiuF043RV/Database?api_key=keyoFYTwLB0vomKLC", {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        const json = await response.json();
+        var done = false;
+        var toReturn = [];
+        var offset = "";
 
-        return json["records"]
+        // Airtable only allows 100 records per response so we do a while loop until it is done
+        // when we do a request but don't get all of the data airtable includes an offset in the response
+        while (!done) {
+            var response = await fetch("https://api.airtable.com/v0/appHLMobCaTLuVQQy/Data?api_key=keyoFYTwLB0vomKLC&offset="+offset, {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            var json = await response.json();
+            toReturn.push(...json.records)
+            if (json.hasOwnProperty("offset")){
+                offset = json.offset;
+            } else {
+                done = true;
+            }
+        }
+        return toReturn;
     } catch (error) {
         console.error("Error:", error);
     }
