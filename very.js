@@ -68,7 +68,6 @@ async function callingFn() {
         document.getElementById("input").value = matching_row.fields.Simple;
       } else {
         matching_row = get_result(results, simple);
-
         // Outputting result
       }
       if (matching_row == undefined) {
@@ -122,5 +121,12 @@ async function callingFn() {
 
   document.addEventListener("keyup", (e) => {
     if (e.key === "Enter") fetch_concise_adjective(res);
+  });
+
+  output.addEventListener("click", () => {
+    window.open(
+      `https://www.dictionary.com/browse/${output.innerText}`,
+      "_blank"
+    );
   });
 })();
