@@ -33,12 +33,6 @@ async function callingFn() {
           },
         }
       );
-      // var response = await fetch("https://api.airtable.com/v0/appHLMobCaTLuVQQy/Data?api_key=keyoFYTwLB0vomKLC&offset="+offset, {
-      //     method: "get",
-      //     headers: {
-      //         "Content-Type": "application/json"
-      //     }
-      // });
       var json = await response.json();
       toReturn.push(...json.records);
       if (json.hasOwnProperty("offset")) {
@@ -124,5 +118,9 @@ async function callingFn() {
     $("#get-result").click(function () {
       fetch_concise_adjective(res);
     });
+  });
+
+  document.addEventListener("keyup", (e) => {
+    if (e.key === "Enter") fetch_concise_adjective(res);
   });
 })();
