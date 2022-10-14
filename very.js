@@ -25,8 +25,7 @@ async function callingFn() {
     // when we do a request but don't get all of the data airtable includes an offset in the response
     while (!done) {
       var response = await fetch(
-        `https://api.airtable.com/v0/appHLMobCaTLuVQQy/Data?api_key=${process.env.AIRTABLE_KEY}&offset= +
-          ${offset}`,
+        `https://api.airtable.com/v0/appHLMobCaTLuVQQy/Data?api_key=keyoFYTwLB0vomKLC&offset=${offset}`,
         {
           method: "get",
           headers: {
