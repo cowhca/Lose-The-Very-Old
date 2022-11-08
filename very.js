@@ -49,49 +49,59 @@ async function callingFn() {
 
 (async () => {
   var res = await callingFn();
-  // Class attributes for output (doesn't include color)
-  // var textClass = "text-center sm:text-3xl md:text-4xl lg:text-5xl font-bold font-serif";
-
+  let currentSimple;
+  let matching_row;
+  let conciseWords = [];
+  let conciseWordsIndex = 0;
   async function fetch_concise_adjective(results, random = false) {
-    const output = document.getElementById("output");
-    const simple = document.getElementById("input").value;
-    var matching_row;
+    let output = document.getElementById("output");
+    let simple = document.getElementById("input");
     // If input is empty tell user that there is no input
-    if (simple === "" && !random) {
+    if (simple.value === "" && !random) {
       output.innerHTML = "No Input";
       output.classList.remove("text-green-400", "text-gray-400");
       output.classList.add("text-red-400");
     } else {
       // Get matching row
       if (random) {
+        conciseWords = [];
+        conciseWordsIndex = 0;
         matching_row = get_random(results);
-        document.getElementById("input").value = matching_row.fields.Simple;
+        simple.value = matching_row.fields.Simple;
+        for (const prop in matching_row.fields) {
+          if (prop !== "Simple") {
+            conciseWords.push(matching_row.fields[prop]);
+          }
+        }
+        shuffle(conciseWords);
+      } else if (
+        !output.classList.contains("text-green-400") ||
+        currentSimple !== simple.value.toLowerCase()
+      ) {
+        conciseWords = [];
+        conciseWordsIndex = 0;
+        // this block is for getting for when users provides a new simple adjective
+        matching_row = get_result(results, simple.value);
+        if (matching_row !== undefined) {
+          for (const prop in matching_row.fields) {
+            if (prop !== "Simple") {
+              conciseWords.push(matching_row.fields[prop]);
+            }
+          }
+        }
+        shuffle(conciseWords);
       } else {
-        matching_row = get_result(results, simple);
-        // Outputting result
+        conciseWordsIndex = (conciseWordsIndex + 1) % conciseWords.length;
       }
+
+      currentSimple = simple.value.toLowerCase();
       if (matching_row == undefined) {
         output.innerHTML = "Not Yet Added";
         // Make the text red
         output.classList.remove("text-green-400", "text-gray-400");
         output.classList.add("text-red-400");
       } else {
-        // There are multiple options for many of the adjectives
-        // Each time we should get a random option
-        const numOptions = Object.keys(matching_row.fields).length - 1;
-        const selectedNumber = Math.floor(Math.random() * numOptions) + 1;
-        let selection = matching_row.fields["Concise" + selectedNumber];
-
-        // Find a new response if there are more than 1 options
-        while (numOptions > 1 && selection == output.innerHTML)
-          selection =
-            matching_row.fields[
-              "Concise" + (Math.floor(Math.random() * numOptions) + 1)
-            ];
-
-        output.innerHTML = selection; // The fields are labels 'Concise1' 'Concise2' etc...
-        // Make the text green
-        output.classList.remove("text-red-400", "text-gray-400");
+        output.innerHTML = conciseWords[conciseWordsIndex];
         output.classList.add("text-green-400");
       }
     }
@@ -103,7 +113,7 @@ async function callingFn() {
   const picked_word = get_random(res);
   input.setAttribute("placeholder", picked_word.fields.Simple);
   output.innerHTML = picked_word.fields["Concise1"];
-  output.classList.add("text-gray-500");
+  output.classList.add("text-gray-400");
 
   // Get a random word pair when the button is pressed
   $(document).ready(function () {
@@ -130,3 +140,23 @@ async function callingFn() {
     );
   });
 })();
+
+function shuffle(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
