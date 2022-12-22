@@ -54,8 +54,6 @@ async function callingFn() {
   let conciseWords = [];
   let conciseWordsIndex = 0;
   async function fetch_concise_adjective(results, random = false) {
-    window._klOnsite = window._klOnsite || [];
-    window._klOnsite.push(["openForm", "YbLLqL"]);
     let output = document.getElementById("output");
     let simple = document.getElementById("input");
     // If input is empty tell user that there is no input
